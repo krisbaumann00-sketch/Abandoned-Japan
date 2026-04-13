@@ -399,7 +399,7 @@ const ISLANDS = [
     name: "Shimoshima", nameJp: "下島", prefecture: "Kumamoto",
     population: 87191, areaKm2: 574.0, latitude: 32.4833, longitude: 130.1833,
     status: "depopulating", conservationPriority: "medium", featured: false,
-    description: "Largest of the Amakusa Islands. A hidden Christian stronghold during Japan's persecutions — the region's 26 UNESCO-listed churches and "Kirishitan" culture draw pilgrims from across the world. Amakusa dolphins are visible year-round in the surrounding straits.",
+    description: "Largest of the Amakusa Islands. A hidden Christian stronghold during Japan's persecutions — the region's 26 UNESCO-listed churches and Kirishitan culture draw pilgrims from across the world. Amakusa dolphins are visible year-round in the surrounding straits.",
     tags: "hidden Christians,churches,UNESCO,dolphins,Amakusa", peakSeason: "Apr–Jun, Sep–Nov",
     accessInfo: "Bridges from Kumamoto mainland (Amakusa Gotobridge route)",
     imageUrl: "https://images.unsplash.com/photo-1549049950-48d5887197a0?w=800",
