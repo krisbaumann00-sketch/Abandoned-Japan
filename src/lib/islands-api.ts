@@ -13,18 +13,31 @@ export interface Island {
   area?: number;
   lat?: number;
   lng?: number;
-  status?: "active" | "abandoned" | "partially_abandoned" | "reviving";
+  status?: "active" | "abandoned" | "partially_abandoned" | "reviving" | "depopulating" | "inhabited";
   volunteer_url?: string;
   tourism_url?: string;
   akiya_count?: number;
   name_jp?: string;
+  conservation_priority?: string;
+  volunteer_needed?: boolean;
+  area_km2?: number;
+  volunteer_count?: number;
+  featured?: boolean;
+  tags?: string;
 }
 
 export interface IslandDetail extends Island {
   history?: string;
   ecology?: string;
   revival_efforts?: string;
-  tags?: string[];
+  long_description?: string;
+  peak_season?: string;
+  access_info?: string;
+  latitude?: number;
+  longitude?: number;
+  gallery_urls?: string;
+  created_at?: string;
+  updated_at?: string | null;
 }
 
 // Fallback data for when the API is unavailable

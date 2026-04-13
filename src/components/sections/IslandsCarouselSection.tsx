@@ -60,8 +60,8 @@ export default function IslandsCarouselSection({ islands }: Props) {
               >
                 {island.name_jp}
               </p>
-              <p className={`text-xs font-medium ${STATUS_COLORS[island.status] || "text-gray-500"}`}>
-                {STATUS_LABELS[island.status] || island.status}
+              <p className={`text-xs font-medium ${STATUS_COLORS[island.status ?? ""] || "text-gray-500"}`}>
+                {STATUS_LABELS[island.status ?? ""] || island.status}
               </p>
               <p className="text-xs text-[#43523d]/50 mt-0.5">{island.prefecture}</p>
             </div>

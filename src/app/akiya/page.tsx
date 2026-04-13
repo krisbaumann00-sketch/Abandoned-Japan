@@ -53,14 +53,14 @@ export default async function AkiyaPage() {
   let islands = FALLBACK_ISLANDS;
 
   try {
-    const response = await getIslands({ items_per_page: 50 });
-    if (response.data.length > 0) islands = response.data;
+    const response = await getIslands();
+    if (response.length > 0) islands = response;
   } catch {
     // use fallback
   }
 
-  const withAkiya = islands.filter((i) => i.akiya_count > 0).sort((a, b) => b.akiya_count - a.akiya_count);
-  const totalAkiya = withAkiya.reduce((sum, i) => sum + i.akiya_count, 0);
+  const withAkiya = islands.filter((i) => (i.akiya_count ?? 0) > 0).sort((a, b) => (b.akiya_count ?? 0) - (a.akiya_count ?? 0));
+  const totalAkiya = withAkiya.reduce((sum, i) => sum + (i.akiya_count ?? 0), 0);
 
   return (
     <main className="min-h-screen bg-[#f4f1ea]">

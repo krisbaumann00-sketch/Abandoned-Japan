@@ -1,6 +1,6 @@
-import type { Island } from "./islands-api";
+import type { IslandDetail } from "./islands-api";
 
-export const FALLBACK_ISLANDS: Island[] = [
+export const FALLBACK_ISLANDS: IslandDetail[] = [
   {
     id: 1,
     name: "Amami Oshima",

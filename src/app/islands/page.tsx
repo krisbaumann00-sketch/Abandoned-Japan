@@ -57,14 +57,14 @@ function IslandCard({ island }: { island: Island }) {
         </div>
         <p className="text-xs text-[#43523d]/65 leading-relaxed mb-3 line-clamp-2">{island.description}</p>
         <div className="flex flex-wrap gap-2">
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${PRIORITY_BADGE[island.conservation_priority] || ""}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${PRIORITY_BADGE[island.conservation_priority ?? ""] || ""}`}>
             {island.conservation_priority} priority
           </span>
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[island.status] || ""}`}>
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[island.status ?? ""] || ""}`}>
             {island.status}
           </span>
         </div>
-        {island.akiya_count > 0 && (
+        {(island.akiya_count ?? 0) > 0 && (
           <p className="text-xs text-[#43523d]/50 mt-2">🏚 {island.akiya_count} akiya homes available</p>
         )}
       </div>
@@ -76,8 +76,8 @@ export default async function IslandsPage() {
   let islands = FALLBACK_ISLANDS;
 
   try {
-    const response = await getIslands({ items_per_page: 50 });
-    if (response.data.length > 0) islands = response.data;
+    const response = await getIslands();
+    if (response.length > 0) islands = response;
   } catch {
     // use fallback
   }
@@ -115,7 +115,7 @@ export default async function IslandsPage() {
           <span className="text-[#43523d]/50 ml-1">critical priority</span>
         </div>
         <div className="flex-shrink-0">
-          <span className="font-bold text-[#43523d]">{islands.reduce((s, i) => s + i.akiya_count, 0)}</span>
+          <span className="font-bold text-[#43523d]">{islands.reduce((s, i) => s + (i.akiya_count ?? 0), 0)}</span>
           <span className="text-[#43523d]/50 ml-1">akiya homes</span>
         </div>
       </div>

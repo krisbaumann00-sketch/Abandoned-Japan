@@ -150,7 +150,7 @@ export async function sendContactAdminNotification(data: {
   return resend.emails.send({
     from: FROM,
     to: ADMIN_EMAIL,
-    replyTo: data.email,
+    reply_to: data.email,
     subject: `New contact: ${data.name} (${data.interest || "General"})`,
     html: `
       <div style="font-family:monospace;padding:24px;background:#f4f1ea;">
@@ -226,7 +226,7 @@ export async function sendStoryAdminNotification(data: {
   return resend.emails.send({
     from: FROM,
     to: ADMIN_EMAIL,
-    replyTo: data.email,
+    reply_to: data.email,
     subject: `New community story: ${data.name} — ${data.island || "unknown island"}`,
     html: `
       <div style="font-family:monospace;padding:24px;background:#f4f1ea;">

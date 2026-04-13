@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import TabNav from "@/components/layout/TabNav";
 import Footer from "@/components/layout/Footer";
-import { getIslandById as getIsland } from "@/lib/islands-api";
+import { getIslandById as getIsland, IslandDetail } from "@/lib/islands-api";
 import { FALLBACK_ISLANDS } from "@/lib/fallback-data";
 
 export const revalidate = 300;
@@ -33,7 +33,7 @@ export default async function IslandDetailPage({ params }: PageProps) {
 
   if (isNaN(islandId)) notFound();
 
-  let island = FALLBACK_ISLANDS.find((i) => i.id === islandId) ?? null;
+  let island: IslandDetail | null = (FALLBACK_ISLANDS.find((i) => i.id === islandId) as IslandDetail | undefined) ?? null;
 
   try {
     island = await getIsland(islandId);
@@ -80,10 +80,10 @@ export default async function IslandDetailPage({ params }: PageProps) {
       <div className="max-w-3xl mx-auto px-4 py-6 space-y-8">
         {/* Badges */}
         <div className="flex flex-wrap gap-2">
-          <span className={`${PRIORITY_COLORS[island.conservation_priority]} text-white text-xs font-semibold px-3 py-1 rounded-full capitalize`}>
+          <span className={`${PRIORITY_COLORS[island.conservation_priority ?? ""]} text-white text-xs font-semibold px-3 py-1 rounded-full capitalize`}>
             {island.conservation_priority} priority
           </span>
-          <span className={`${STATUS_COLORS[island.status]} text-white text-xs font-semibold px-3 py-1 rounded-full capitalize`}>
+          <span className={`${STATUS_COLORS[island.status ?? ""]} text-white text-xs font-semibold px-3 py-1 rounded-full capitalize`}>
             {island.status}
           </span>
           {island.volunteer_needed && (
@@ -96,10 +96,10 @@ export default async function IslandDetailPage({ params }: PageProps) {
         {/* Key stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
-            { label: "Population", value: island.population === 0 ? "Uninhabited" : island.population.toLocaleString() },
-            { label: "Area", value: `${island.area_km2} km²` },
-            { label: "Akiya Homes", value: island.akiya_count > 0 ? island.akiya_count.toString() : "None listed" },
-            { label: "Volunteers", value: island.volunteer_count > 0 ? `${island.volunteer_count} active` : "Needed" },
+            { label: "Population", value: (island.population ?? 0) === 0 ? "Uninhabited" : (island.population ?? 0).toLocaleString() },
+            { label: "Area", value: `${island.area_km2 ?? island.area ?? "?"} km²` },
+            { label: "Akiya Homes", value: (island.akiya_count ?? 0) > 0 ? island.akiya_count!.toString() : "None listed" },
+            { label: "Volunteers", value: (island.volunteer_count ?? 0) > 0 ? `${island.volunteer_count} active` : "Needed" },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-xl p-4 text-center border border-[#43523d]/10 shadow-sm">
               <p className="text-xs text-[#43523d]/50 mb-1">{stat.label}</p>

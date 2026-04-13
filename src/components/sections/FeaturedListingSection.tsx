@@ -46,7 +46,7 @@ export default function FeaturedListingSection({ island }: Props) {
           )}
           {/* Priority badge */}
           <div
-            className={`absolute top-3 right-3 text-white text-xs font-semibold px-3 py-1 rounded-full capitalize ${priorityColors[island.conservation_priority] || "bg-gray-600"}`}
+            className={`absolute top-3 right-3 text-white text-xs font-semibold px-3 py-1 rounded-full capitalize ${priorityColors[island.conservation_priority ?? ""] || "bg-gray-600"}`}
           >
             {island.conservation_priority} priority
           </div>
@@ -71,8 +71,8 @@ export default function FeaturedListingSection({ island }: Props) {
             </div>
             <div className="text-right text-xs text-[#43523d]/60">
               <div>{island.prefecture} Prefecture</div>
-              {island.population > 0 && <div>{island.population.toLocaleString()} residents</div>}
-              {island.population === 0 && <div className="text-red-600 font-semibold">Uninhabited</div>}
+              {(island.population ?? 0) > 0 && <div>{island.population!.toLocaleString()} residents</div>}
+              {(island.population ?? 1) === 0 && <div className="text-red-600 font-semibold">Uninhabited</div>}
             </div>
           </div>
 
@@ -80,7 +80,7 @@ export default function FeaturedListingSection({ island }: Props) {
 
           {/* Stats row */}
           <div className="flex gap-4 mb-4 text-xs text-[#43523d]/60">
-            {island.akiya_count > 0 && (
+            {(island.akiya_count ?? 0) > 0 && (
               <span>🏚 {island.akiya_count} akiya</span>
             )}
             <span>📐 {island.area_km2} km²</span>
