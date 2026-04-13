@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Property {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Int
+  type        String
+  location    String
+  prefecture  String
+  island      String
+  bedrooms    Int?
+  area        Int?
+  lat         Float
+  lng         Float
+  imageUrl    String
+  featured    Boolean  @default(false)
+  available   Boolean  @default(true)
+  builtYear   String?
+  needs       String?
+  listedAgo   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  date           DateTime
+  location       String
+  island         String
+  price          Int?
+  currency       String   @default("JPY")
+  category       String
+  featured       Boolean  @default(false)
+  imageUrl       String?
+  volunteerCount Int?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  password      String?
+  role          String    @default("user")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  contacts      ContactSubmission[]
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  interest  String
+  message   String
+  userId    String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
