@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 const TABS = [
   { label: "Homes", href: "/akiya" },
   { label: "Islands", href: "/islands" },
-  { label: "Volunteering", href: "/projects" },
-  { label: "Festivals", href: "/community" },
-  { label: "Stories", href: "/community#stories" },
+  { label: "Volunteer", href: "/volunteer" },
+  { label: "Festivals", href: "/events" },
+  { label: "Stories", href: "/community" },
 ];
 
 export default function TabNav() {

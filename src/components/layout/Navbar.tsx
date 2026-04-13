@@ -30,8 +30,8 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link href="/islands" className="hover:text-[#facc15] transition-colors">Islands</Link>
           <Link href="/akiya" className="hover:text-[#facc15] transition-colors">Akiya</Link>
-          <Link href="/species" className="hover:text-[#facc15] transition-colors">Species</Link>
-          <Link href="/projects" className="hover:text-[#facc15] transition-colors">Projects</Link>
+          <Link href="/events" className="hover:text-[#facc15] transition-colors">Festivals</Link>
+          <Link href="/volunteer" className="hover:text-[#facc15] transition-colors">Volunteer</Link>
           <Link href="/community" className="hover:text-[#facc15] transition-colors">Community</Link>
           <Link href="/about" className="hover:text-[#facc15] transition-colors">About</Link>
         </div>
@@ -69,8 +69,8 @@ export default function Navbar() {
         <div className="md:hidden border-t border-white/10 px-4 py-3 flex flex-col gap-4 text-sm font-medium">
           <Link href="/islands" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Islands</Link>
           <Link href="/akiya" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Akiya</Link>
-          <Link href="/species" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Species</Link>
-          <Link href="/projects" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Projects</Link>
+          <Link href="/events" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Festivals</Link>
+          <Link href="/volunteer" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Volunteer</Link>
           <Link href="/community" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">Community</Link>
           <Link href="/about" onClick={() => setMobileOpen(false)} className="hover:text-[#facc15] transition-colors">About</Link>
         </div>

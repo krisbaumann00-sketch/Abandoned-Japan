@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
@@ -111,6 +114,36 @@ const programs = [
 ];
 
 export default function VolunteerPage() {
+  const [form, setForm] = useState({ name: "", email: "", island: "", skills: "", message: "" });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [newsletter, setNewsletter] = useState({ email: "", done: false });
+
+  async function handleVolunteer(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, subject: "Volunteer Sign-Up" }),
+      });
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleNewsletter(e: React.FormEvent) {
+    e.preventDefault();
+    await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newsletter.email, email: newsletter.email, message: "Newsletter sign-up", subject: "Newsletter" }),
+    });
+    setNewsletter((n) => ({ ...n, done: true }));
+  }
+
   return (
     <main>
       <Navbar />
@@ -219,18 +252,76 @@ export default function VolunteerPage() {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="mt-16 bg-[#43523d] text-white rounded-2xl p-10 text-center">
-            <h2 className="text-3xl font-bold font-serif mb-4">Know of Another Programme?</h2>
-            <p className="text-white/70 mb-8 max-w-xl mx-auto">
-              We&apos;re always looking to add verified volunteer opportunities across Japan&apos;s 14,000+ islands. Get in touch.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-[#facc15] text-[#43523d] px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition-colors"
-            >
-              Suggest a Programme
-            </Link>
+          {/* Volunteer sign-up form */}
+          <div className="mt-16 bg-white rounded-2xl shadow-md p-8 md:p-10">
+            <h2 className="text-2xl font-bold font-serif text-[#43523d] mb-2">Sign Up to Volunteer</h2>
+            <p className="text-[#a97a5e] mb-8">Tell us about yourself and which island or programme interests you. We&apos;ll connect you directly.</p>
+            {submitted ? (
+              <div className="text-center py-10">
+                <p className="text-4xl mb-3">🙏</p>
+                <p className="font-bold text-[#43523d] text-lg mb-1">Thank you!</p>
+                <p className="text-[#43523d]/60 text-sm">We&apos;ll be in touch within a few days with next steps.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleVolunteer} className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-bold text-[#43523d] uppercase tracking-wider mb-1.5">Your Name *</label>
+                    <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
+                      className="w-full border border-[#43523d]/20 rounded-xl px-4 py-3 text-sm bg-[#f4f1ea] text-[#43523d] focus:outline-none focus:border-[#43523d]"
+                      placeholder="Tanaka Yuki" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-[#43523d] uppercase tracking-wider mb-1.5">Email *</label>
+                    <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                      className="w-full border border-[#43523d]/20 rounded-xl px-4 py-3 text-sm bg-[#f4f1ea] text-[#43523d] focus:outline-none focus:border-[#43523d]"
+                      placeholder="you@email.com" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#43523d] uppercase tracking-wider mb-1.5">Which island or programme?</label>
+                  <input value={form.island} onChange={e => setForm({ ...form, island: e.target.value })}
+                    className="w-full border border-[#43523d]/20 rounded-xl px-4 py-3 text-sm bg-[#f4f1ea] text-[#43523d] focus:outline-none focus:border-[#43523d]"
+                    placeholder="Naoshima, Teshima, Setouchi Triennale, Ogasawara..." />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#43523d] uppercase tracking-wider mb-1.5">Skills & background</label>
+                  <input value={form.skills} onChange={e => setForm({ ...form, skills: e.target.value })}
+                    className="w-full border border-[#43523d]/20 rounded-xl px-4 py-3 text-sm bg-[#f4f1ea] text-[#43523d] focus:outline-none focus:border-[#43523d]"
+                    placeholder="Carpentry, farming, photography, Japanese..." />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#43523d] uppercase tracking-wider mb-1.5">Tell us more</label>
+                  <textarea rows={4} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
+                    className="w-full border border-[#43523d]/20 rounded-xl px-4 py-3 text-sm bg-[#f4f1ea] text-[#43523d] focus:outline-none focus:border-[#43523d] resize-none"
+                    placeholder="When are you available? What draws you to these islands?" />
+                </div>
+                <button type="submit" disabled={loading}
+                  className="w-full bg-[#43523d] text-white font-bold py-4 rounded-xl hover:bg-[#3a4735] transition-colors disabled:opacity-50">
+                  {loading ? "Sending..." : "Express Interest →"}
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Newsletter */}
+          <div className="mt-8 bg-[#facc15] rounded-2xl p-8 text-center">
+            <p className="text-xs font-bold uppercase tracking-widest text-[#43523d]/60 mb-2">Stay Connected</p>
+            <h2 className="text-2xl font-bold font-serif text-[#43523d] mb-2">Island Updates Newsletter</h2>
+            <p className="text-[#43523d]/70 text-sm mb-6 max-w-md mx-auto">New islands, volunteer openings, festivals, and akiya listings — delivered monthly. No spam.</p>
+            {newsletter.done ? (
+              <p className="font-bold text-[#43523d]">✓ You&apos;re on the list!</p>
+            ) : (
+              <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input required type="email" value={newsletter.email}
+                  onChange={e => setNewsletter(n => ({ ...n, email: e.target.value }))}
+                  className="flex-1 border-2 border-[#43523d]/30 rounded-full px-5 py-3 text-sm bg-white text-[#43523d] focus:outline-none focus:border-[#43523d]"
+                  placeholder="your@email.com" />
+                <button type="submit" className="bg-[#43523d] text-white font-bold px-7 py-3 rounded-full hover:bg-[#3a4735] transition-colors whitespace-nowrap">
+                  Subscribe
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

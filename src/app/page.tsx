@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import NewsletterSection from "@/components/NewsletterSection";
 import { prisma } from "@/lib/db";
 
 export const revalidate = 300;
@@ -18,13 +19,14 @@ export default async function HomePage() {
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-end">
+      <section className="relative h-[90vh] min-h-[600px] flex items-end bg-[#2a3528]">
         <Image
           src="/hero.jpg"
           alt="Abandoned Japan"
           fill
           className="object-cover"
           priority
+          unoptimized
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
         <div className="relative z-10 max-w-5xl mx-auto px-6 pb-20 w-full">
@@ -310,6 +312,9 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      {/* ── NEWSLETTER ───────────────────────────────────────────────────── */}
+      <NewsletterSection />
 
       <Footer />
     </main>
