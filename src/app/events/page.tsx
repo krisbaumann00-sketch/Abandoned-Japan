@@ -9,7 +9,7 @@ const CATEGORIES = ["All", "Art Festival", "Restoration", "Conservation", "Marin
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
   const params = await searchParams;
   const category = params.category && params.category !== "All" ? params.category : undefined;

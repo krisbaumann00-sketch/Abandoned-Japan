@@ -14,7 +14,7 @@ const TYPES = ["All", "house", "commercial", "studio"];
 export default async function PropertiesPage({
   searchParams,
 }: {
-  searchParams: { prefecture?: string; type?: string; min?: string; max?: string };
+  searchParams: Promise<{ prefecture?: string; type?: string; min?: string; max?: string }>;
 }) {
   const params = await searchParams;
   const prefecture = params.prefecture && params.prefecture !== "All" ? params.prefecture : undefined;

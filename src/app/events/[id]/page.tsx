@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export default async function EventDetailPage({ params }: { params: { id: string } }) {
+export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const event = await prisma.event.findUnique({ where: { id } });
   if (!event) notFound();

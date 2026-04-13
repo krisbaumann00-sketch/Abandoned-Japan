@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import TabNav from "@/components/layout/TabNav";
 import Footer from "@/components/layout/Footer";
-import { getIsland } from "@/lib/islands-api";
+import { getIslandById as getIsland } from "@/lib/islands-api";
 import { FALLBACK_ISLANDS } from "@/lib/fallback-data";
 
 export const revalidate = 300;

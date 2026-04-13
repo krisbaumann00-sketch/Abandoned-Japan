@@ -35,7 +35,7 @@ function AkiyaCard({ island }: { island: Island }) {
         <p className="text-xs text-[#43523d]/65 leading-relaxed mb-3 line-clamp-2">{island.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-xs text-[#43523d]/50">
-            {island.population > 0 ? `${island.population.toLocaleString()} residents` : "Uninhabited"}
+            {(island.population ?? 0) > 0 ? `${island.population!.toLocaleString()} residents` : "Uninhabited"}
           </span>
           <Link
             href={`/islands/${island.id}`}

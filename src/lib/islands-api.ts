@@ -16,6 +16,8 @@ export interface Island {
   status?: "active" | "abandoned" | "partially_abandoned" | "reviving";
   volunteer_url?: string;
   tourism_url?: string;
+  akiya_count?: number;
+  name_jp?: string;
 }
 
 export interface IslandDetail extends Island {
