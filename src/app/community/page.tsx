@@ -5,48 +5,15 @@ import Navbar from "@/components/layout/Navbar";
 import TabNav from "@/components/layout/TabNav";
 import Footer from "@/components/layout/Footer";
 
-const STORIES = [
-  {
-    name: "Sarah M.",
-    location: "Edinburgh, UK → Teshima, Kagawa",
-    avatar: "S",
-    date: "November 2024",
-    story:
-      "I spent three weeks on Teshima helping restore an abandoned farm. I came for a holiday and stayed to help replant terraces that hadn't seen rice in 20 years. The island elder, Tanaka-san, taught me to read the soil by its smell. I came home understanding what the word 'home' actually means. I'll be back every year.",
-    island: "Teshima",
-    type: "Volunteer",
-  },
-  {
-    name: "Kenji T.",
-    location: "Tokyo → Naoshima, Kagawa",
-    avatar: "K",
-    date: "September 2023",
-    story:
-      "As a Japanese person I felt shame that these islands were dying and I had never visited any of them despite living two hours away. Abandoned Japan gave me a way to act rather than just feel sad. I now co-manage a kominka on Naoshima with two families from Europe. It's the strangest and most meaningful community I've ever been part of.",
-    island: "Naoshima",
-    type: "Resident",
-  },
-  {
-    name: "Marie D.",
-    location: "Lyon, France → Inujima, Okayama",
-    avatar: "M",
-    date: "March 2024",
-    story:
-      "Inujima has 50 people left. The copper refinery ruins are haunting — beautiful and tragic simultaneously. I went to photograph it and ended up spending two weeks interviewing the oldest residents about what the island was like when 800 people lived there. The archive is now hosted by Okayama University. Something will survive.",
-    island: "Inujima",
-    type: "Researcher",
-  },
-  {
-    name: "Hiroshi N.",
-    location: "Osaka → Aoshima, Ehime",
-    avatar: "H",
-    date: "May 2024",
-    story:
-      "I moved to Aoshima for a month. 13 people and 160 cats. No wi-fi, one ferry a day, no convenience stores. The slowness was brutal at first. By week two it was a cure for something I hadn't named. I'm going back permanently next spring with my partner. We're taking over an abandoned fishing house.",
-    island: "Aoshima",
-    type: "Future Resident",
-  },
-];
+const STORIES: {
+  name: string;
+  location: string;
+  avatar: string;
+  date: string;
+  story: string;
+  island: string;
+  type: string;
+}[] = [];
 
 export default function CommunityPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -99,31 +66,39 @@ export default function CommunityPage() {
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         {/* Stories */}
         <div id="stories" className="space-y-4">
-          {STORIES.map((story) => (
-            <div key={story.name} className="bg-white rounded-2xl p-5 border border-[#43523d]/10 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-11 h-11 rounded-full bg-[#43523d] text-white text-sm font-bold flex items-center justify-center flex-shrink-0">
-                  {story.avatar}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-[#43523d]">{story.name}</p>
-                  <p className="text-xs text-[#a97a5e] truncate">{story.location}</p>
-                </div>
-                <div className="text-right flex-shrink-0">
-                  <span className="text-xs bg-[#43523d]/10 text-[#43523d] px-2 py-0.5 rounded-full font-medium">
-                    {story.type}
-                  </span>
-                </div>
-              </div>
-              <blockquote className="text-sm text-[#43523d]/75 leading-relaxed italic mb-3">
-                &ldquo;{story.story}&rdquo;
-              </blockquote>
-              <div className="flex items-center justify-between text-xs text-[#43523d]/40">
-                <span>📍 {story.island}</span>
-                <span>{story.date}</span>
-              </div>
+          {STORIES.length === 0 ? (
+            <div className="bg-white rounded-2xl p-8 border border-[#43523d]/10 shadow-sm text-center">
+              <p className="text-3xl mb-3">🌿</p>
+              <p className="text-sm font-bold text-[#43523d] mb-1">Be the first to share your story</p>
+              <p className="text-xs text-[#43523d]/60">Stories from volunteers, residents, and researchers will appear here.</p>
             </div>
-          ))}
+          ) : (
+            STORIES.map((story) => (
+              <div key={story.name} className="bg-white rounded-2xl p-5 border border-[#43523d]/10 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-11 h-11 rounded-full bg-[#43523d] text-white text-sm font-bold flex items-center justify-center flex-shrink-0">
+                    {story.avatar}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-[#43523d]">{story.name}</p>
+                    <p className="text-xs text-[#a97a5e] truncate">{story.location}</p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="text-xs bg-[#43523d]/10 text-[#43523d] px-2 py-0.5 rounded-full font-medium">
+                      {story.type}
+                    </span>
+                  </div>
+                </div>
+                <blockquote className="text-sm text-[#43523d]/75 leading-relaxed italic mb-3">
+                  &ldquo;{story.story}&rdquo;
+                </blockquote>
+                <div className="flex items-center justify-between text-xs text-[#43523d]/40">
+                  <span>📍 {story.island}</span>
+                  <span>{story.date}</span>
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         {/* Share your story form */}
