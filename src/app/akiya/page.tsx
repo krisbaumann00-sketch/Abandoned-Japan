@@ -3,25 +3,25 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import TabNav from "@/components/layout/TabNav";
 import Footer from "@/components/layout/Footer";
-import { getIslands } from "@/lib/islands-api";
-import { FALLBACK_ISLANDS } from "@/lib/fallback-data";
-import type { Island } from "@/lib/islands-api";
+import { prisma } from "@/lib/db";
 
 export const revalidate = 300;
 
-function AkiyaCard({ island }: { island: Island }) {
+type DbIsland = Awaited<ReturnType<typeof prisma.island.findMany>>[number];
+
+function AkiyaCard({ island }: { island: DbIsland }) {
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#43523d]/10 card-hover">
       <div className="relative w-full h-40">
         <Image
-          src={island.image_url || "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600"}
+          src={island.imageUrl || "https://images.unsplash.com/photo-1480796927426-f609979314bd?w=600"}
           alt={`Akiya homes on ${island.name}`}
           fill
           className="object-cover"
           unoptimized
         />
         <div className="absolute top-2 right-2 bg-[#43523d] text-white text-xs font-bold px-2 py-0.5 rounded-full">
-          {island.akiya_count} homes
+          {island.akiyaCount} homes
         </div>
       </div>
       <div className="p-4">
@@ -31,11 +31,12 @@ function AkiyaCard({ island }: { island: Island }) {
         >
           {island.name}
         </h3>
-        <p className="text-xs text-[#a97a5e] mb-2">{island.name_jp} · {island.prefecture}</p>
+        <p className="text-xs text-[#a97a5e] mb-2">{island.nameJp} · {island.prefecture}</p>
         <p className="text-xs text-[#43523d]/65 leading-relaxed mb-3 line-clamp-2">{island.description}</p>
         <div className="flex items-center justify-between">
           <span className="text-xs text-[#43523d]/50">
             {(island.population ?? 0) > 0 ? `${island.population!.toLocaleString()} residents` : "Uninhabited"}
+
           </span>
           <Link
             href={`/islands/${island.id}`}
@@ -50,17 +51,9 @@ function AkiyaCard({ island }: { island: Island }) {
 }
 
 export default async function AkiyaPage() {
-  let islands = FALLBACK_ISLANDS;
-
-  try {
-    const response = await getIslands();
-    if (response.length > 0) islands = response;
-  } catch {
-    // use fallback
-  }
-
-  const withAkiya = islands.filter((i) => (i.akiya_count ?? 0) > 0).sort((a, b) => (b.akiya_count ?? 0) - (a.akiya_count ?? 0));
-  const totalAkiya = withAkiya.reduce((sum, i) => sum + (i.akiya_count ?? 0), 0);
+  const islands = await prisma.island.findMany({ where: { akiyaCount: { gt: 0 } }, orderBy: { akiyaCount: "desc" } });
+  const withAkiya = islands;
+  const totalAkiya = islands.reduce((sum, i) => sum + i.akiyaCount, 0);
 
   return (
     <main className="min-h-screen bg-[#f4f1ea]">

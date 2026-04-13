@@ -3,9 +3,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import TabNav from "@/components/layout/TabNav";
 import Footer from "@/components/layout/Footer";
-import { getIslands } from "@/lib/islands-api";
-import { FALLBACK_ISLANDS } from "@/lib/fallback-data";
-import type { Island } from "@/lib/islands-api";
+import { prisma } from "@/lib/db";
 
 export const revalidate = 300;
 
@@ -23,7 +21,9 @@ const STATUS_BADGE: Record<string, string> = {
   inhabited: "bg-blue-100 text-blue-700",
 };
 
-function IslandCard({ island }: { island: Island }) {
+type DbIsland = Awaited<ReturnType<typeof prisma.island.findMany>>[number];
+
+function IslandCard({ island }: { island: DbIsland }) {
   return (
     <Link
       href={`/islands/${island.id}`}
@@ -31,7 +31,7 @@ function IslandCard({ island }: { island: Island }) {
     >
       <div className="relative w-full h-44">
         <Image
-          src={island.image_url || "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600"}
+          src={island.imageUrl || "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600"}
           alt={island.name}
           fill
           className="object-cover"
@@ -52,20 +52,20 @@ function IslandCard({ island }: { island: Island }) {
             >
               {island.name}
             </h3>
-            <p className="text-xs text-[#a97a5e]">{island.name_jp} · {island.prefecture}</p>
+            <p className="text-xs text-[#a97a5e]">{island.nameJp} · {island.prefecture}</p>
           </div>
         </div>
         <p className="text-xs text-[#43523d]/65 leading-relaxed mb-3 line-clamp-2">{island.description}</p>
         <div className="flex flex-wrap gap-2">
-          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${PRIORITY_BADGE[island.conservation_priority ?? ""] || ""}`}>
-            {island.conservation_priority} priority
+          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${PRIORITY_BADGE[island.conservationPriority ?? ""] || ""}`}>
+            {island.conservationPriority} priority
           </span>
           <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_BADGE[island.status ?? ""] || ""}`}>
             {island.status}
           </span>
         </div>
-        {(island.akiya_count ?? 0) > 0 && (
-          <p className="text-xs text-[#43523d]/50 mt-2">🏚 {island.akiya_count} akiya homes available</p>
+        {island.akiyaCount > 0 && (
+          <p className="text-xs text-[#43523d]/50 mt-2">🏚 {island.akiyaCount} akiya homes available</p>
         )}
       </div>
     </Link>
@@ -73,14 +73,7 @@ function IslandCard({ island }: { island: Island }) {
 }
 
 export default async function IslandsPage() {
-  let islands = FALLBACK_ISLANDS;
-
-  try {
-    const response = await getIslands();
-    if (response.length > 0) islands = response;
-  } catch {
-    // use fallback
-  }
+  const islands = await prisma.island.findMany({ orderBy: [{ featured: "desc" }, { name: "asc" }] });
 
   return (
     <main className="min-h-screen bg-[#f4f1ea]">
@@ -111,11 +104,11 @@ export default async function IslandsPage() {
           <span className="text-[#43523d]/50 ml-1">islands listed</span>
         </div>
         <div className="flex-shrink-0">
-          <span className="font-bold text-red-600">{islands.filter(i => i.conservation_priority === "critical").length}</span>
+          <span className="font-bold text-red-600">{islands.filter(i => i.conservationPriority === "critical").length}</span>
           <span className="text-[#43523d]/50 ml-1">critical priority</span>
         </div>
         <div className="flex-shrink-0">
-          <span className="font-bold text-[#43523d]">{islands.reduce((s, i) => s + (i.akiya_count ?? 0), 0)}</span>
+          <span className="font-bold text-[#43523d]">{islands.reduce((s, i) => s + i.akiyaCount, 0)}</span>
           <span className="text-[#43523d]/50 ml-1">akiya homes</span>
         </div>
       </div>
