@@ -1,39 +1,46 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { label: "Homes", href: "/akiya" },
-  { label: "Islands", href: "/islands" },
-  { label: "Volunteer", href: "/volunteer" },
-  { label: "Festivals", href: "/events" },
-  { label: "Stories", href: "/community" },
+  { label: "Home",       href: "/" },
+  { label: "Islands",    href: "/islands" },
+  { label: "Map",        href: "/map" },
+  { label: "Akiya",      href: "/akiya" },
+  { label: "Properties", href: "/properties" },
+  { label: "Events",     href: "/events" },
+  { label: "Volunteer",  href: "/volunteer" },
+  { label: "Community",  href: "/community" },
+  { label: "About",      href: "/about" },
+  { label: "Contact",    href: "/contact" },
 ];
 
 export default function TabNav() {
   const pathname = usePathname();
 
   return (
-    <div className="bg-[#facc15] overflow-x-auto scroll-hidden">
-      <div className="flex items-center gap-1 px-3 py-2 min-w-max">
-        {TABS.map((tab) => {
-          const isActive = pathname === tab.href || pathname.startsWith(tab.href + "/");
+    <nav className="bg-[#1a2e1a] border-b border-[#2d4a2d] sticky top-0 z-40 overflow-x-auto scrollbar-hide">
+      <div className="flex min-w-max px-4">
+        {TABS.map(({ label, href }) => {
+          const active =
+            href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(href);
           return (
             <Link
-              key={tab.href}
-              href={tab.href}
-              className={
-                isActive
-                  ? "px-4 py-1.5 rounded-full text-sm font-semibold bg-white text-[#43523d] whitespace-nowrap transition-all"
-                  : "px-4 py-1.5 rounded-full text-sm font-semibold text-[#43523d] whitespace-nowrap hover:bg-white/40 transition-all"
-              }
+              key={href}
+              href={href}
+              className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
+                active
+                  ? "text-[#8fbc5a] border-[#8fbc5a]"
+                  : "text-[#c8d8a8] border-transparent hover:text-white hover:border-white/30"
+              }`}
             >
-              {tab.label}
+              {label}
             </Link>
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 }
