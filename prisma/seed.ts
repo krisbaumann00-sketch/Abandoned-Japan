@@ -81,13 +81,8 @@ async function main() {
     },
   ];
 
-  for (const island of islands) {
-    await prisma.island.upsert({
-      where: { name: island.name },
-      update: island,
-      create: island,
-    });
-  }
+  await prisma.island.deleteMany();
+  await prisma.island.createMany({ data: islands });
   console.log(`✓ ${islands.length} islands seeded`);
 
   // ── EVENTS ───────────────────────────────────────────────────────────────
@@ -142,13 +137,8 @@ async function main() {
     },
   ];
 
-  for (const event of events) {
-    await prisma.event.upsert({
-      where: { title: event.title },
-      update: event,
-      create: event,
-    });
-  }
+  await prisma.event.deleteMany();
+  await prisma.event.createMany({ data: events });
   console.log(`✓ ${events.length} events seeded`);
 
   // ── PROPERTIES ───────────────────────────────────────────────────────────
