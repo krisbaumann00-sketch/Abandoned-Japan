@@ -33,12 +33,14 @@ export default function HeroSection() {
         </div>
 
         <h1
-          className="animate-fade-up delay-200 font-serif text-cream leading-[1.1] mb-6"
-          style={{ opacity: 0, fontSize: "clamp(3rem, 8vw, 6rem)" }}
-        >
-          Where Silence
-          <br />
-          <em className="italic text-secondary">Tells the Story</em>
+                  <h1
+                  className="animate-fade-up delay-200 font-serif text-cream leading-[1.1] mb-6"
+                  style={{ opacity: 0, fontSize: "clamp(3rem, 8vw, 6rem)" }}
+                >
+                  Abandoned Japan
+                  <br />
+                  <em className="italic text-secondary">LIVE on abandonedjapan.org</em>
+                </h1>
         </h1>
 
         <p
